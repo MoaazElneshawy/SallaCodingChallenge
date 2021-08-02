@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moaazelneshawy.sallacodechallenge.R
 import com.moaazelneshawy.sallacodechallenge.databinding.FragmentDetailsBinding
@@ -50,28 +49,10 @@ class DetailsFragment : Fragment() {
                         orientation = ViewPager2.ORIENTATION_HORIZONTAL
                         adapter = sliderAdapter
                     }
-                    handleTabsIndicator()
+                    TabLayoutMediator(binding.tabDots, binding.vpSlider) { _, _ -> }.attach()
                 }
-
             }
         }
     }
-
-    private fun handleTabsIndicator() {
-        TabLayoutMediator(binding.tabDots, binding.vpSlider) { _, _ -> }.attach()
-        binding.tabDots.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.position?.let { binding.vpSlider.setCurrentItem(it, true) }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-        })
-    }
-
 
 }
