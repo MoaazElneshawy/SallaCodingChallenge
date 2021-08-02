@@ -10,7 +10,7 @@ import javax.inject.Inject
 class ProductsViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
     fun loadProducts(page: Int) = loadData {
-        apiService.getAllProducts(259940351, page, 8)
+        apiService.getAllProducts(259940351, page, 5)
     }
 
     fun loadProductDetails(id: Int) = loadData {

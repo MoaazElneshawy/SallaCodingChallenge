@@ -48,32 +48,27 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        getBrandProducts(page)
+    override fun onResume() {
+        super.onResume()
+        getBrandProducts()
     }
 
-    private fun getBrandProducts(page: Int) {
+    private fun getBrandProducts() {
+        this.page = 1
         viewModel.loadProducts(page).observe(viewLifecycleOwner) {
             it?.response?.let {
+                binding.brand = it.brand
 
-                when (page) {
-                    1 -> {
-                        binding.brand = it.brand
-                        productsAdapter.fill(it.data)
-                    }
-                    else -> productsAdapter.addMoreProducts(it.data)
-                }
+                productsAdapter.fill(it.data)
+
                 binding.rvProducts.apply {
                     layoutManager =
                         GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
                     this.adapter = productsAdapter
                 }
-                this.page += 1
                 it.cursor?.let { cursor ->
-                    if (::noPaginate.isInitialized.not())
-                        setupPagination(cursor)
-                    noPaginate.setNoMoreItems(cursor.next == null)
+                    setupPagination(cursor)
+                    noPaginate.showLoading(false)
                 }
             }
         }
@@ -82,14 +77,36 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
     private fun setupPagination(cursor: Cursor) {
         noPaginate = NoPaginate.with(binding.rvProducts)
             .setOnLoadMoreListener {
-//                getBrandProducts(page)
-                requireContext().log("page $page, cursor ${cursor.next}")
+                loadMoreProducts(page)
             }
-            .setLoadingTriggerThreshold(2)
+            .setLoadingTriggerThreshold(4)
             .setCustomErrorItem(CustomErrorItem())
             .setCustomLoadingItem(CustomLoadingItem())
             .build()
+        noPaginate.showError(false)
+        noPaginate.setNoMoreItems(cursor.next == null)
     }
+
+    private fun loadMoreProducts(page: Int) {
+        noPaginate.showLoading(true)
+        noPaginate.showError(false)
+        viewModel.loadProducts(page).observe(viewLifecycleOwner) {
+            it?.response?.let {
+                noPaginate.showLoading(false)
+                if (it.success) {
+                    noPaginate.showError(false)
+                    this.page = it.cursor?.current?.plus(1) ?: 1
+                    noPaginate.setNoMoreItems(it.cursor?.next == null)
+                    productsAdapter.addMoreProducts(it.data)
+                } else {
+                    noPaginate.showError(true)
+                    this.page -= 1
+                }
+                requireContext().log("page $page, cursor ${it.cursor?.next}")
+            }
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
