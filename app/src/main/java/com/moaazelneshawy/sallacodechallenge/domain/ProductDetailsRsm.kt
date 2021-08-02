@@ -41,7 +41,7 @@ data class ProductDetailsRsm(
     @SerializedName("promotion")
     val promotion: Promotion,
     @SerializedName("quantity")
-    val quantity: Int,
+    val quantity: Long,
     @SerializedName("rating")
     val rating: Rating,
     @SerializedName("regular_price")

@@ -1,4 +1,4 @@
-package com.moaazelneshawy.sallacodechallenge.di
+package com.moaazelneshawy.sallacodechallenge.data.di
 
 import android.content.Context
 import com.moaazelneshawy.sallacodechallenge.core.BaseApplication

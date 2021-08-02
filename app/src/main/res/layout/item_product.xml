@@ -31,11 +31,13 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvProductName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_3sdp"
                 android:layout_marginVertical="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_5sdp"
                 android:gravity="start"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:text="@{product.name}"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_13ssp"
@@ -46,9 +48,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:paddingHorizontal="@dimen/_3sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                app:layout_constraintEnd_toEndOf="@id/tvProductName"
                 android:text="@{product.promotion.title}"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="@dimen/_12ssp"
@@ -64,6 +68,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:ellipsize="start"
                 android:lines="1"
+                android:paddingHorizontal="@dimen/_5sdp"
                 android:text="@{product.hasSpecialPrice ?  @string/amount_currency(product.salePrice.amount,product.salePrice.currency) : @string/amount_currency(product.regularPrice.amount,product.regularPrice.currency)}"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_14ssp"
