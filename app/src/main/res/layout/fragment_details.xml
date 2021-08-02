@@ -39,7 +39,6 @@
                 app:tabBackground="@drawable/bg_indicator"
                 app:tabGravity="center"
                 app:tabIndicator="@android:color/transparent"
-                app:tabIndicatorAnimationDuration="10"
                 app:tabIndicatorAnimationMode="elastic"
                 app:tabIndicatorHeight="0dp"
                 app:tabPaddingStart="0dp" />
@@ -50,14 +49,11 @@
                 android:elevation="@dimen/_1sdp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clDetails"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:background="@drawable/bg_details"
                     android:elevation="@dimen/_5sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_30sdp"
-                    android:paddingBottom="@dimen/_10sdp"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -119,7 +115,6 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:background="@drawable/bg_buttons"
                     android:elevation="@dimen/_10sdp"
                     android:src="@drawable/ic_baseline_favorite_24"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -130,7 +125,6 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:background="@drawable/bg_buttons"
                     android:elevation="@dimen/_10sdp"
                     android:src="@drawable/ic_baseline_share_24"
                     app:layout_constraintStart_toEndOf="@id/ibFav"

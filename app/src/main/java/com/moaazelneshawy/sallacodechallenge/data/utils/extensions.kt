@@ -1,6 +1,7 @@
 package com.moaazelneshawy.sallacodechallenge.data.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -17,6 +18,10 @@ fun View.applyCustomShape(
     shapeType: Int = GradientDrawable.RECTANGLE,
     backgroundColor: Int = Color.DKGRAY,
     cornersRadius: Float = 0f,
+    topRightRadius: Float = 0f,
+    topLeftRadius: Float = 0f,
+    bottomRightRadius: Float = 0f,
+    bottomLeftRadius: Float = 0f,
     strokeWidth: Int = 0,
     strokeColor: Int = Color.WHITE,
     paddingLeft: Int = 0,
@@ -34,6 +39,20 @@ fun View.applyCustomShape(
             setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
         }
         setStroke(0, Color.WHITE)
+
+    }
+    if ((topLeftRadius > 0f) || (topRightRadius > 0f) || (bottomLeftRadius > 0f) || (bottomRightRadius > 0f)) {
+        drawable.cornerRadii =
+            floatArrayOf(
+                topLeftRadius.dpToPx,
+                topLeftRadius.dpToPx,
+                topRightRadius.dpToPx,
+                topRightRadius.dpToPx,
+                bottomLeftRadius.dpToPx,
+                bottomLeftRadius.dpToPx,
+                bottomRightRadius.dpToPx,
+                bottomRightRadius.dpToPx,
+            )
     }
     this.background = drawable
 }
@@ -41,3 +60,6 @@ fun View.applyCustomShape(
 fun Context.log(message: String) {
     Log.e(this.javaClass.simpleName, message)
 }
+
+val Float.dpToPx: Float
+    get() = (this * Resources.getSystem().displayMetrics.density)

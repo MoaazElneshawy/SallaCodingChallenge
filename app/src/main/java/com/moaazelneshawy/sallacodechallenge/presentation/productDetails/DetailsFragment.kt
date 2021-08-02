@@ -1,5 +1,7 @@
 package com.moaazelneshawy.sallacodechallenge.presentation.productDetails
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.moaazelneshawy.sallacodechallenge.R
+import com.moaazelneshawy.sallacodechallenge.data.utils.applyCustomShape
 import com.moaazelneshawy.sallacodechallenge.databinding.FragmentDetailsBinding
 import com.moaazelneshawy.sallacodechallenge.presentation.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,10 +36,40 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addShapeToViews()
         arguments?.let {
             val productId = it.getInt(getString(R.string.nav_key_product_id))
             getProductDetails(productId)
         }
+    }
+
+    private fun addShapeToViews() {
+        binding.ibFav.applyCustomShape(
+            backgroundColor = Color.WHITE,
+            shapeType = GradientDrawable.OVAL,
+            paddingBottom = 5,
+            paddingTop = 5,
+            paddingLeft = 5,
+            paddingRight = 5
+        )
+        binding.ibShare.applyCustomShape(
+            backgroundColor = Color.WHITE,
+            shapeType = GradientDrawable.OVAL,
+            paddingBottom = 5,
+            paddingTop = 5,
+            paddingLeft = 5,
+            paddingRight = 5
+        )
+        binding.clDetails.applyCustomShape(
+            shapeType = GradientDrawable.RECTANGLE,
+            backgroundColor = Color.WHITE,
+            topLeftRadius = 30f,
+            topRightRadius = 30f,
+            paddingRight = 30,
+            paddingLeft = 30,
+            paddingTop = 80,
+            paddingBottom = 30
+        )
     }
 
     private fun getProductDetails(productId: Int) {
