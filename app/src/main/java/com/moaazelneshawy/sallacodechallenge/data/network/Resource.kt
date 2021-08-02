@@ -9,15 +9,17 @@ package com.moaazelneshawy.sallacodechallenge.data.network
 data class Resource<out T>(
     @Status val status: Int,
     val message: String? = null,
-    val data: T? = null) {
+    val response: T? = null
+) {
 
-  companion object {
+    companion object {
 
-    fun loading(): Resource<Nothing> = Resource(LOADING)
+        fun loading(): Resource<Nothing> = Resource(LOADING)
 
-    fun <T> success(data: T?): Resource<T> =
-        Resource(status = SUCCESS, data = data)
+        fun <T> success(data: T?): Resource<T> =
+            Resource(status = SUCCESS, response = data)
 
-    fun failure(message: String): Resource<Nothing> = Resource(status = ERROR, message = message)
-  }
+        fun failure(message: String): Resource<Nothing> =
+            Resource(status = ERROR, message = message)
+    }
 }

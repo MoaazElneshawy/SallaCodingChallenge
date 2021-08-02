@@ -9,10 +9,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
-    private val TAG = ProductsViewModel::class.java.simpleName
+    fun loadProducts(page: Int) = loadData {
+        apiService.getAllProducts(259940351, page, 8)
+    }
 
-    fun loadProducts() = loadData {
-        apiService.getAllProducts(259940351, 1, 5)
+    fun loadProductDetails(id: Int) = loadData {
+        apiService.getProductDetails(id)
     }
 
 }

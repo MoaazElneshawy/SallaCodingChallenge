@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="product"
+            type="com.moaazelneshawy.sallacodechallenge.domain.ProductDetailsRsm" />
+    </data>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none"
+        tools:context=".presentation.productDetails.DetailsFragment">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="ScrollViewSize">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpSlider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp" />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingHorizontal="@dimen/_20sdp"
+                app:dotsClickable="true"
+                app:dotsColor="@color/lightGray"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="@dimen/_10sdp"
+                app:dotsSpacing="@dimen/_2sdp"
+                app:dotsWidthFactor="2.5"
+                app:progressMode="false"
+                app:selectedDotColor="@color/darkGray" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="@dimen/_1sdp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/bg_details"
+                    android:elevation="@dimen/_5sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_30sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:gravity="right"
+                        android:text="@{product.name}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintLeft_toRightOf="@id/ivLogo"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlHardcoded"
+                        tools:text="@string/app_name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="start"
+                        android:text="@{product.name}"
+                        app:layout_constraintRight_toRightOf="@id/tvTitle"
+                        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                        tools:text="@string/app_name" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:gravity="start"
+                        android:text="@{product.hasSpecialPrice ?  @string/amount_currency(product.salePrice.amount,product.salePrice.currency) : @string/amount_currency(product.regularPrice.amount,product.regularPrice.currency)}"
+                        android:textColor="@color/black"
+                        android:visibility="@{product.regularPrice != null ? View.VISIBLE : View.INVISIBLE}"
+                        app:layout_constraintRight_toRightOf="@id/tvTitle"
+                        app:layout_constraintTop_toBottomOf="@id/tvDescription"
+                        tools:text="@string/app_name" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivLogo"
+                        imageUrl="@{product.brand.logo}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:maxWidth="@dimen/_100sdp"
+                        android:maxHeight="@dimen/_40sdp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvTitle"
+                        tools:layout_height="@dimen/_40sdp"
+                        tools:layout_width="@dimen/_100sdp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/ibFav"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:background="@drawable/bg_buttons"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/ic_baseline_favorite_24"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/ibShare"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:background="@drawable/bg_buttons"
+                    android:elevation="@dimen/_10sdp"
+                    android:src="@drawable/ic_baseline_share_24"
+                    app:layout_constraintStart_toEndOf="@id/ibFav"
+                    app:layout_constraintTop_toTopOf="@id/ibFav" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+</layout>

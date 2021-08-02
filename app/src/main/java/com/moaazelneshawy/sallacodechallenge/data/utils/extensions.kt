@@ -1,8 +1,10 @@
 package com.moaazelneshawy.sallacodechallenge.data.utils
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
+import android.util.Log
 import android.view.View
 
 /**
@@ -34,4 +36,8 @@ fun View.applyCustomShape(
         setStroke(0, Color.WHITE)
     }
     this.background = drawable
+}
+
+fun Context.log(message: String) {
+    Log.e(this.javaClass.simpleName, message)
 }

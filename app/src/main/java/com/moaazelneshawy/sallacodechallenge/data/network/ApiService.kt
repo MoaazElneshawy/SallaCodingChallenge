@@ -23,4 +23,7 @@ interface ApiService {
         @Query("per_page") perPage: Int
     ): Response<BaseRsm<List<BrandProduct>>>
 
+    @GET("products/{id}/details") // 492449845
+    suspend fun getProductDetails(@Path("id") id: Int): Response<BaseRsm<ProductDetailsRsm>>
+
 }

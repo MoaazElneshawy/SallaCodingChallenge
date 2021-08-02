@@ -9,7 +9,7 @@ data class Cursor(
     @SerializedName("current")
     val current: Int,
     @SerializedName("next")
-    val next: String,
+    val next: String?,
     @SerializedName("previous")
     val previous: Any
 )

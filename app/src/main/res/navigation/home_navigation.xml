@@ -9,5 +9,18 @@
         android:id="@+id/allProductsFragment"
         android:name="com.moaazelneshawy.sallacodechallenge.presentation.allProducts.AllProductsFragment"
         android:label="all_products_fragment"
-        tools:layout="@layout/all_products_fragment" />
+        tools:layout="@layout/all_products_fragment">
+        <action
+            android:id="@+id/actionShowProductDetails"
+            app:destination="@id/detailsFragment">
+            <argument
+                android:name="@string/nav_key_product_id"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.moaazelneshawy.sallacodechallenge.presentation.productDetails.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" />
 </navigation>
