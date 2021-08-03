@@ -6,22 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moaazelneshawy.sallacodechallenge.R
-import com.moaazelneshawy.sallacodechallenge.data.utils.CustomErrorItem
-import com.moaazelneshawy.sallacodechallenge.data.utils.CustomLoadingItem
 import com.moaazelneshawy.sallacodechallenge.data.utils.applyCustomShape
 import com.moaazelneshawy.sallacodechallenge.data.utils.log
 import com.moaazelneshawy.sallacodechallenge.databinding.AllProductsFragmentBinding
-import com.moaazelneshawy.sallacodechallenge.domain.Cursor
 import com.moaazelneshawy.sallacodechallenge.presentation.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import ru.alexbykov.nopaginate.paginate.NoPaginate
 
 
 @AndroidEntryPoint
@@ -29,9 +27,9 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
 
     private val viewModel by viewModels<ProductsViewModel>()
     private val productsAdapter by lazy { ProductsAdapter(this) }
-
+    private val loading = MutableLiveData<Boolean>(false)
     private var page = 1
-    private lateinit var noPaginate: NoPaginate
+    private var hasMoreItems = true
     private lateinit var binding: AllProductsFragmentBinding
 
     override fun onCreateView(
@@ -44,7 +42,20 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
             container,
             false
         )
-        binding.cvBanner.applyCustomShape(backgroundColor = Color.WHITE, cornersRadius = 20f)
+        with(binding) {
+            ViewCompat.setNestedScrollingEnabled(rvProducts, false)
+            nsvRoot.viewTreeObserver?.addOnScrollChangedListener {
+                val view = nsvRoot.getChildAt(nsvRoot.childCount - 1)
+
+                val diff = view.bottom - (nsvRoot.height + nsvRoot.scrollY)
+
+                if (diff == 0)
+                    if (hasMoreItems)
+                        loadMoreProducts(page)
+
+            }
+            cvBanner.applyCustomShape(backgroundColor = Color.WHITE, cornersRadius = 20f)
+        }
         return binding.root
     }
 
@@ -67,50 +78,27 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
                     this.adapter = productsAdapter
                 }
                 it.cursor?.let { cursor ->
-                    setupPagination(cursor)
-                    noPaginate.showLoading(false)
+                    hasMoreItems = cursor.next != null
+                    if (hasMoreItems) page += 1
                 }
             }
         }
-    }
-
-    private fun setupPagination(cursor: Cursor) {
-        noPaginate = NoPaginate.with(binding.rvProducts)
-            .setOnLoadMoreListener {
-                loadMoreProducts(page)
-            }
-            .setLoadingTriggerThreshold(4)
-            .setCustomErrorItem(CustomErrorItem())
-            .setCustomLoadingItem(CustomLoadingItem())
-            .build()
-        noPaginate.showError(false)
-        noPaginate.setNoMoreItems(cursor.next == null)
     }
 
     private fun loadMoreProducts(page: Int) {
-        noPaginate.showLoading(true)
-        noPaginate.showError(false)
         viewModel.loadProducts(page).observe(viewLifecycleOwner) {
+
             it?.response?.let {
-                noPaginate.showLoading(false)
                 if (it.success) {
-                    noPaginate.showError(false)
-                    this.page = it.cursor?.current?.plus(1) ?: 1
-                    noPaginate.setNoMoreItems(it.cursor?.next == null)
+                    hasMoreItems = it.cursor?.next != null
+                    if (hasMoreItems) this.page = it.cursor?.current?.plus(1) ?: 1
                     productsAdapter.addMoreProducts(it.data)
                 } else {
-                    noPaginate.showError(true)
                     this.page -= 1
                 }
-                requireContext().log("page $page, cursor ${it.cursor?.next}")
+                requireContext().log("page ${this.page}, cursor ${it.cursor?.next}")
             }
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (::noPaginate.isInitialized) noPaginate.unbind()
     }
 
     override fun onProductClicked(id: Int) {

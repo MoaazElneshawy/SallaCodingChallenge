@@ -9,16 +9,19 @@
 
     </data>
 
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nsvRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-
-            android:background="@color/bgColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/bgColor"
             android:orientation="vertical">
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -45,10 +48,10 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="@dimen/_40sdp"
-                android:maxWidth="@dimen/_100sdp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:maxWidth="@dimen/_100sdp"
+                android:maxHeight="@dimen/_40sdp"
                 bind:imageUrl="@{brand.logo}" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -65,5 +68,8 @@
                 android:layout_marginTop="@dimen/_10sdp" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
 
 </layout>
