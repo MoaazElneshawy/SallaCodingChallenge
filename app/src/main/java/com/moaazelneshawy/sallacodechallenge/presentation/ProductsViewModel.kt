@@ -9,8 +9,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
 
-    fun loadProducts(page: Int) = loadData {
-        apiService.getAllProducts(259940351, page, 5)
+    fun loadProducts(page: Int, perPage: Int) = loadData {
+        apiService.getAllProducts(259940351, page, perPage)
     }
 
     fun loadProductDetails(id: Int) = loadData {

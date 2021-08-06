@@ -1,6 +1,5 @@
 package com.moaazelneshawy.sallacodechallenge.presentation.allProducts
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +9,13 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.moaazelneshawy.sallacodechallenge.R
-import com.moaazelneshawy.sallacodechallenge.data.utils.applyCustomShape
-import com.moaazelneshawy.sallacodechallenge.data.utils.log
 import com.moaazelneshawy.sallacodechallenge.databinding.AllProductsFragmentBinding
+import com.moaazelneshawy.sallacodechallenge.domain.Brand
+import com.moaazelneshawy.sallacodechallenge.domain.BrandProduct
 import com.moaazelneshawy.sallacodechallenge.presentation.ProductsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,8 +24,14 @@ import dagger.hilt.android.AndroidEntryPoint
 class AllProductsFragment : Fragment(), OnProductClickListener {
 
     private val viewModel by viewModels<ProductsViewModel>()
+
     private val productsAdapter by lazy { ProductsAdapter(this) }
-    private val loading = MutableLiveData<Boolean>(false)
+
+    private val products = mutableListOf<BrandProduct>()
+    private lateinit var brand: Brand
+
+    private var load = true
+    private var perPage = 5
     private var page = 1
     private var hasMoreItems = true
     private lateinit var binding: AllProductsFragmentBinding
@@ -36,6 +40,7 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.all_products_fragment,
@@ -45,6 +50,7 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
         with(binding) {
             ViewCompat.setNestedScrollingEnabled(rvProducts, false)
             nsvRoot.viewTreeObserver?.addOnScrollChangedListener {
+
                 val view = nsvRoot.getChildAt(nsvRoot.childCount - 1)
 
                 val diff = view.bottom - (nsvRoot.height + nsvRoot.scrollY)
@@ -52,51 +58,62 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
                 if (diff == 0)
                     if (hasMoreItems)
                         loadMoreProducts(page)
-
             }
-            cvBanner.applyCustomShape(backgroundColor = Color.WHITE, cornersRadius = 20f)
         }
+
+        binding.rvProducts.apply {
+            layoutManager =
+                GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
+            this.adapter = productsAdapter
+        }
+
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (load) getBrandProducts() else setSavedData(brand)
+    }
+
+    private fun setSavedData(brand: Brand) {
+        binding.brand = brand
+        productsAdapter.fill(products)
     }
 
     override fun onResume() {
         super.onResume()
-        getBrandProducts()
+        load = false
     }
 
     private fun getBrandProducts() {
         this.page = 1
-        viewModel.loadProducts(page).observe(viewLifecycleOwner) {
+        viewModel.loadProducts(page, perPage).observe(viewLifecycleOwner) {
             it?.response?.let {
+                this.brand = it.brand!!
                 binding.brand = it.brand
+                products.addAll(it.data)
+                productsAdapter.fill(products)
 
-                productsAdapter.fill(it.data)
-
-                binding.rvProducts.apply {
-                    layoutManager =
-                        GridLayoutManager(requireContext(), 2, RecyclerView.VERTICAL, false)
-                    this.adapter = productsAdapter
-                }
                 it.cursor?.let { cursor ->
                     hasMoreItems = cursor.next != null
                     if (hasMoreItems) page += 1
                 }
+
             }
         }
     }
 
     private fun loadMoreProducts(page: Int) {
-        viewModel.loadProducts(page).observe(viewLifecycleOwner) {
-
+        viewModel.loadProducts(page, 5).observe(viewLifecycleOwner) {
             it?.response?.let {
                 if (it.success) {
                     hasMoreItems = it.cursor?.next != null
                     if (hasMoreItems) this.page = it.cursor?.current?.plus(1) ?: 1
+                    products.addAll(it.data)
                     productsAdapter.addMoreProducts(it.data)
                 } else {
                     this.page -= 1
                 }
-                requireContext().log("page ${this.page}, cursor ${it.cursor?.next}")
             }
         }
     }
@@ -107,4 +124,6 @@ class AllProductsFragment : Fragment(), OnProductClickListener {
             bundleOf(getString(R.string.nav_key_product_id) to id)
         )
     }
+
+
 }

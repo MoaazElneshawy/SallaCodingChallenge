@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.graphics.Color" />
+
         <variable
             name="brand"
             type="com.moaazelneshawy.sallacodechallenge.domain.Brand" />
@@ -10,7 +12,6 @@
     </data>
 
     <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/nsvRoot"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,10 +36,11 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvBanner"
+                backgroundColor="@android:color/transparent"
+                cornersRadius="@{20}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:cardBackgroundColor="@android:color/transparent">
+                android:layout_marginTop="@dimen/_10sdp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="match_parent"

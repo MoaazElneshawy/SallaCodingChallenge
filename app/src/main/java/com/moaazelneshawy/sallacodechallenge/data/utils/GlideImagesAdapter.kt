@@ -13,7 +13,7 @@ on 01,August,2021
  **/
 
 
-@BindingAdapter("bind:imageUrl")
+@BindingAdapter("imageUrl")
 fun loadImage(view: AppCompatImageView, imageUrl: String?) {
     Glide.with(view.context)
         .load(imageUrl)

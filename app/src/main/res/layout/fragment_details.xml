@@ -6,6 +6,10 @@
 
         <import type="android.view.View" />
 
+        <import type="android.graphics.drawable.GradientDrawable" />
+
+        <import type="android.graphics.Color" />
+
         <variable
             name="product"
             type="com.moaazelneshawy.sallacodechallenge.domain.ProductDetailsRsm" />
@@ -36,8 +40,16 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDetails"
+                    backgroundColor="@{Color.WHITE}"
+                    shapeType="@{GradientDrawable.RECTANGLE}"
+                    topLeftRadius="@{30}"
+                    topRightRadius="@{30}"
+                    viewPaddingBottom="@{30}"
+                    viewPaddingLeft="@{30}"
+                    viewPaddingRight="@{30}"
+                    viewPaddingTop="@{80}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:elevation="@dimen/_5sdp"
                     app:layout_constraintTop_toTopOf="parent">
@@ -101,20 +113,32 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/ibFav"
+                    backgroundColor="@{Color.WHITE}"
+                    shapeType="@{GradientDrawable.OVAL}"
+                    viewPaddingBottom="@{5}"
+                    viewPaddingLeft="@{5}"
+                    viewPaddingRight="@{5}"
+                    viewPaddingTop="@{5}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:elevation="@dimen/_10sdp"
+                    android:elevation="@dimen/_8sdp"
                     android:src="@drawable/ic_baseline_favorite_24"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/ibShare"
+                    backgroundColor="@{Color.WHITE}"
+                    shapeType="@{GradientDrawable.OVAL}"
+                    viewPaddingBottom="@{5}"
+                    viewPaddingLeft="@{5}"
+                    viewPaddingRight="@{5}"
+                    viewPaddingTop="@{5}"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginStart="@dimen/_20sdp"
-                    android:elevation="@dimen/_10sdp"
+                    android:elevation="@dimen/_8sdp"
                     android:src="@drawable/ic_baseline_share_24"
                     app:layout_constraintStart_toEndOf="@id/ibFav"
                     app:layout_constraintTop_toTopOf="@id/ibFav" />
