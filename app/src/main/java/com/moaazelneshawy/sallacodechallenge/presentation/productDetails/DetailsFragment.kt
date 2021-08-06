@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.moaazelneshawy.sallacodechallenge.R
+import com.moaazelneshawy.sallacodechallenge.data.utils.CirclePagerIndicatorDecoration
 import com.moaazelneshawy.sallacodechallenge.data.utils.applyCustomShape
 import com.moaazelneshawy.sallacodechallenge.databinding.FragmentDetailsBinding
 import com.moaazelneshawy.sallacodechallenge.presentation.ProductsViewModel
@@ -78,11 +80,13 @@ class DetailsFragment : Fragment() {
                 sliderAdapter = SliderAdapter(it)
                 with(binding) {
                     this.product = it
-                    vpSlider.apply {
-                        orientation = ViewPager2.ORIENTATION_HORIZONTAL
+                    rvSlider.apply {
+                        layoutManager =
+                            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
                         adapter = sliderAdapter
                     }
-                    TabLayoutMediator(binding.tabDots, binding.vpSlider) { _, _ -> }.attach()
+                    PagerSnapHelper().attachToRecyclerView(rvSlider)
+                    rvSlider.addItemDecoration(CirclePagerIndicatorDecoration())
                 }
             }
         }

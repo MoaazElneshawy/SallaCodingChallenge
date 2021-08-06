@@ -24,24 +24,10 @@
             android:orientation="vertical"
             tools:ignore="ScrollViewSize">
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/vpSlider"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSlider"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabDots"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_7sdp"
-                android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="@dimen/_30sdp"
-                android:background="@android:color/transparent"
-                app:tabBackground="@drawable/bg_indicator"
-                app:tabGravity="center"
-                app:tabIndicator="@android:color/transparent"
-                app:tabIndicatorAnimationMode="elastic"
-                app:tabIndicatorHeight="0dp"
-                app:tabPaddingStart="0dp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
